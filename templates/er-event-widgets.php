@@ -66,11 +66,13 @@ function er_latest_widget ($post_type, $posts) {
     _SC_HTML;
 
     foreach ($posts as $key => $post) {
+      if ($key === 3) break;
+
       $html_posts_list .= <<<_SC_HTML
         <div id="er-$post_type-{$post->term_taxonomy_id}" class="border-b text-base py-5 cursor-pointer" onClick="er_get_post_by_id({$post->term_taxonomy_id}, '$post_type')">
-          {$post->name}
+        {$post->name}
         </div>
-      _SC_HTML;
+      _SC_HTML;      
     }
   }
   
