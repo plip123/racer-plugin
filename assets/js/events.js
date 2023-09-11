@@ -61,19 +61,35 @@ function event_html_template (event) {
   return template;
 }
 
-function print_event_list (element, events) {
-  let lastMonth = "";
-  events.forEach((event) => {
-    const currentMonth = (events[0].date.split("/"))[1];
-    if(lastMonth !== currentMonth) {
-      element.append(`
-        <h5 class="capitalize text-xl text-[#500F12] font-bold">${uiMonths[currentMonth]}</h5>
-      `);
-      lastMonth = currentMonth;
-    }
-
-    element.append(event_html_template(event));
-  });
+function print_event_list (element, events, orderBy="month") {
+  if (orderBy === "championship") {
+    console.log("CHAMPIONS", events);
+    Object.keys(events).forEach((key) => {
+      if (key !== "length") {
+        const currentTitle = key.replace("_", " ");
+        element.append(`
+          <h5 class="capitalize text-xl text-[#500F12] font-bold">${currentTitle}</h5>
+        `);
+        
+        events[key].forEach((ev) => {
+          element.append(event_html_template(ev));
+        });
+      }
+    });
+  } else {
+    let lastMonth = "";
+    events.forEach((event) => {
+      const currentMonth = (events[0].date.split("/"))[1];
+      if(lastMonth !== currentMonth) {
+        element.append(`
+          <h5 class="capitalize text-xl text-[#500F12] font-bold">${uiMonths[currentMonth]}</h5>
+        `);
+        lastMonth = currentMonth;
+      }
+  
+      element.append(event_html_template(event));
+    });
+  }
 }
 
 function empty_list () {
@@ -85,7 +101,7 @@ function empty_list () {
   if (listElements.length > 0) listElements.append(uiNotifications('error', 'No hay eventos por el momento.'));
 }
 
-function event_list (events, listAll) {
+function event_list (events, listAll=false, orderBy="month") {
   const showElement = jQuery("#er-show-event");
   const listElements = jQuery("#er-event-list");
   showElement.empty();
@@ -97,11 +113,9 @@ function event_list (events, listAll) {
     } else {
       showElement.append(uiNotifications('error', 'No hay eventos por el momento.'));
     }
-  }
-
-  if (listElements.length > 0) {
+  } else if (listElements.length > 0) {
     if (!!events && events.length > 0) {
-      print_event_list(listElements, events);
+      print_event_list(listElements, events, orderBy);
     } else {
       listElements.append(uiNotifications('error', 'No hay eventos por el momento.'));
     }

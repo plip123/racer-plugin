@@ -1,7 +1,7 @@
 <?php
 
 require_once(ER_PATH . 'templates/er-table.php');
-require_once(ER_PATH. 'templates/er-calendar-widget.php');
+require_once(ER_PATH. 'templates/er-event-widgets.php');
 require_once(ER_PATH. 'modules/er-category-rank.php');
 
 function er_notification (string $type, string $message) {
@@ -61,24 +61,46 @@ function er_show_calendar_event () {
 add_shortcode('er-show-calendar-events', 'er_show_calendar_event');
 
 function er_event_list () {
-    $html = er_event_template();
-    $html = str_replace('%ER_EVENT_IMAGE%', "https://picsum.photos/200", $html);
-    $html = str_replace('%ER_EVENT_NAME%', "kartódromo Carmencita Hernández", $html);
-    $html = str_replace('%ER_EVENT_DATE%', "4 de marzo del 2023", $html);
-    $html = str_replace('%ER_EVENT_DESCRIPTION%', "El Kartódromo Carmencita Hernández albergará la primera valida del primer campeonato 2023.", $html);
-    $html = str_replace('%ER_EVENT_UBICATION%', "Aragua, Venezuela.", $html);
-    $html = str_replace('%ER_EVENT_LENGTH%', "1,08", $html);
-    $html = str_replace('%ER_EVENT_WIDTH%', "8", $html);
-    $html = str_replace('%ER_EVENT_CURVES%', "13", $html);
-    $html = str_replace('%ER_EVENT_CATEGORIES%', "Baby, Mini novatos, Mini expertos, Junior, Senior, Master, Shifter.", $html);
-
-    return $html;
+    return er_event_list_container();
 }
 add_shortcode('er-event-list', 'er_event_list');
 
-function er_calendar_event () {
-    $html = er_calendar_widget();
+function er_event_list_championship () {
+    return er_event_list_container(0, 'championship');
+}
+add_shortcode('er-event-list-championship', 'er_event_list_championship');
 
-    return $html;
+//
+// Widgets
+//
+
+function er_calendar_event () {
+    return er_calendar_widget();
 }
 add_shortcode('er-calendar-widget', 'er_calendar_event');
+
+function er_search_event_widget () {
+    return er_search_widget("event");
+}
+add_shortcode('er-search-event-widget', 'er_search_event_widget');
+
+function er_search_championship_widget () {
+    return er_search_widget("championship");
+}
+add_shortcode('er-search-championship-widget', 'er_search_championship_widget');
+
+function er_latest_championship_widget () {
+    $args = array(
+        'taxonomy'      => array('er_championship_cat'),
+        'orderby'       => 'ID',
+        'order'         => 'DESC',
+        'hide_empty'    => true,
+        'fields'        => 'all'
+    );
+
+    $terms = get_terms( $args );
+    //print_r($terms);
+    return er_latest_widget("championship", $terms);
+}
+add_shortcode('er-latest-championship-widget', 'er_latest_championship_widget');
+

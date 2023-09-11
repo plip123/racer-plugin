@@ -1,8 +1,7 @@
 #er-wrapper{
-  padding: 40px;
-  display: grid; 
-  grid-gap: 40px; 
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 [id^=er-calendar],

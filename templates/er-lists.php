@@ -39,11 +39,21 @@ function er_event_template () {
 }
 
 
-function er_event_list_container ($max_events=0) {
+function er_event_list_container ($max_events=0, $type="basic") {
   $id = $max_events == 0 ? "er-event-list" : "er-show-event";
+  $class_id = "";
+
+  switch ($type) {
+    case 'championship':
+      $class_id = "er-event-championship";
+      break;
+    default:
+      $class_id = "";
+      break;
+  }
 
   $html = <<<_SC_HTML
-      <div id="$id" class="flex flex-col gap-8"></div>
+      <div id="$id" class="flex flex-col gap-8 $class_id"></div>
   _SC_HTML;
 
   return $html;

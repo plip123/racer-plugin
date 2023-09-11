@@ -62,12 +62,22 @@ async function er_onMonthChanged (month, year) {
   event_list(response.data);
 }
 
+async function er_get_events_by_championship () {
+  console.log("CHAMPIONSHIP");
+  response = await er_call_to_ajax_function({
+    action: "er_get_event_filter",
+    orderBy: "championship",
+  }, "event");
+  const events = response.data;
+
+  console.log("EVENTS CHAMPIONSHIP", events);
+  event_list(events, true, "championship");
+};
+
 jQuery(document).ready(_ => {
   jQuery("#er-calendar").ready(_ => {
-    er_get_calendar_data();
+    if (jQuery("#er-calendar").length > 0) er_get_calendar_data();
   });
-
-  let events = [];
 
   jQuery("#er-calendar").on("click touchstart", ".a-date", async function(e){
     const data = jQuery(this).data('event');
@@ -81,12 +91,71 @@ jQuery(document).ready(_ => {
         month: dateToFilter[1],
         year: dateToFilter[2],
       }, "event");
-      events = response.data;
+      const events = response.data;
     
-      console.log("EVENTS FILTERED", events, events.length);
+      console.log("EVENTS FILTERED", events);
       event_list(events, true);
     } else {
       empty_list();
     }
   });
+
+  jQuery("#er-search-event").on("input", async function (e){
+    const input = (e.target.value).toLowerCase();
+
+    if (!!input) {
+      response = await er_call_to_ajax_function({
+        action: "er_get_event_filter",
+        search: input,
+      }, "event");
+      const events = response.data;
+
+      console.log("EVENTS SEARCHED", events);
+      event_list(events);
+    } else {
+      empty_list();
+    }
+  });
+
+  jQuery(".er-event-championship").ready(async _ => {
+    if (jQuery(".er-event-championship").length <= 0) return;
+
+    await er_get_events_by_championship();
+  });
+
+  jQuery("#er-search-championship").on("input", async function (e){
+    const search = (e.target.value).toLowerCase();
+
+    response = await er_call_to_ajax_function({
+      action: "er_get_events_by_championship",
+      search,
+    }, "event");
+    const events = response.data;
+  
+    console.log("SEARCH CHAMPIONSHIP", events);
+    event_list(events, true, "championship");
+  });
 });
+
+
+async function er_get_post_by_id (id, post_type) {
+  console.log("BY_ID", id, post_type);
+  switch (post_type) {
+    case "championship":
+      if (id === -1) {
+        await er_get_events_by_championship();
+      } else {
+        response = await er_call_to_ajax_function({
+          action: "er_get_events_by_championship",
+          championship_id: id,
+        }, "event");
+        const events = response.data;
+      
+        console.log("SEARCH CHAMPIONSHIP", events);
+        event_list(events, true, "championship");
+      }
+      break;
+    default:
+      break;
+  }
+}
