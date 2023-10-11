@@ -39,11 +39,7 @@ function er_new_post_user( $new_status, $old_status, $post ) {
   // Mail data
   $mail_to = '';
   $subject = 'Felicidades! Su afiliación fue aprobada';
-  $body = `
-    Su afiliación fue aprobada con exito.
-    Ahora puede descargar su carnet de afiliación desde el archivo adjunto.
-    En caso de tener inconvenientes, contactenos al correo registro@fvkarting.com.ve
-  `;
+  $body = "Su afiliación fue aprobada con exito.\n\nAhora puede descargar su carnet de afiliación desde el archivo adjunto.\n\nEn caso de tener inconvenientes, contactenos al correo registro@fvkarting.com.ve";
   $headers = array('Content-Type: text/html; charset=UTF-8');
   $attachments = array($pdf_dir);
 
