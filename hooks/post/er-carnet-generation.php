@@ -71,7 +71,7 @@ function er_new_post_user( $new_status, $old_status, $post ) {
   $subject = 'Felicidades! Su afiliación fue aprobada';
   $body = "Su afiliación fue aprobada con exito.<br><br>Ahora puede descargar sus credenciales de afiliación desde los archivos adjuntos.<br><br>En caso de tener inconvenientes contactenos al correo registro@fvkarting.com.ve";
   $headers = array('Content-Type: text/html; charset=UTF-8');
-  $attachments = array($carnet_dir, );
+  $attachments = array($carnet_dir, $affiliate_credential_dir);
 
   if (strcmp('er_racer', $post->post_type) === 0) {
     $mail_to = get_field('er_racer_email', $id);
@@ -131,6 +131,15 @@ function er_new_post_user( $new_status, $old_status, $post ) {
 
   // Output a PDF file to temporal dir
   $mpdf->OutputFile($carnet_dir);
+
+  // Create Credential Letter
+  $mpdf = new \Mpdf\Mpdf();
+
+  $html = er_get_credential_letter($id, $name, $ci, $expiration_date, $affiliate);
+  $mpdf->WriteHTML($html);
+
+  // Output a PDF file to temporal dir
+  $mpdf->OutputFile($affiliate_credential_dir);
 
   // Send email
   wp_mail($mail_to, $subject, $body, $headers, $attachments);

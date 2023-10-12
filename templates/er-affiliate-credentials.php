@@ -239,9 +239,120 @@ function er_get_back_carnet ($blood, $born, $allergic, $expiration_date) {
   return $html;
 }
 
+function er_get_month ($month_number) {
+  switch ($month_number) {
+    case 1:
+      return 'enero';
+    case 2:
+      return 'febrero';
+    case 3:
+      return 'marzo';
+    case 4:
+      return 'abril';
+    case 5:
+      return 'mayo';
+    case 6:
+      return 'junio';
+    case 7:
+      return 'julio';
+    case 8:
+      return 'agosto';
+    case 9:
+      return 'septiembre';
+    case 10:
+      return 'octubre';
+    case 11:
+      return 'noviembre';
+    case 12:
+      return 'diciembre';
+    default:
+      return 'enero';
+  }
+}
+
 function er_get_credential_letter ($id, $name, $ci, $expiration_date, $affiliate) {
+  $date = explode("/", $expiration_date);
+  $day = $date[0];
+  $month = er_get_month(intval($date[1]));
+  $year = $date[2];
+
   $html = <<<_SC_HTML
-  
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Credencial de Afiliación FVK</title>
+    </head>
+    <style>
+      .er-text-center {
+        text-align: center;
+      }
+
+      .er-uppercase {
+        text-transform: uppercase;
+      }
+
+      .er-header img {
+        margin: auto;
+      }
+
+      .er-main-title {
+        margin-top: 80px;
+        margin-bottom: 80px;
+      }
+
+      .er-main-content {
+        line-height: 32px;
+      }
+
+      .er-sign-section {
+        margin: auto;
+        margin-top: 100px;
+        width: 900px;
+      }
+
+      .er-sign-title {
+        margin-bottom: 100px;
+      }
+
+      .er-president-sign {
+        float: left;
+        width: 300px;
+      }
+
+      .er-secretary-sign {
+        float: right;
+        width: 300px;
+      }
+    </style>
+    <body>
+      <div class="er-header er-text-center">
+        <img src="https://fvkarting.com.ve/wp-content/uploads/2023/03/LOGO-FVK-COLOR.png" width="200" alt="FVK">
+      </div>
+
+      <h1 class="er-main-title er-uppercase er-text-center">Credencial de Afiliación</h1>
+
+      <p class="er-main-content">
+        La Federación Venezolana de Karting certifica que la ciudadana <span class="er-uppercase"><strong>$name</strong></span>, portadora de la Cédula de Identidad <strong>Nº $ci</strong>, está afiliada a nuestra organización en calidad de <span class="er-uppercase"><strong>$affiliate</strong></span>, con número de carnet <strong>$id</strong>, agradecemos a las autoridades civiles, militares y deportivas prestarle todo el apoyo a nuestro miembro afiliado en cuanto a las actividades que se realizan en traslado de material propio del Karting y permisos inherentes a nuestras actividades. Esta credencial tiene una validez hasta el $day de $month del año $year, cualquier información puede ser verificada por los siguientes números de teléfonos: <strong>0426-447-25-04/0412-613-92-51</strong>.
+      </p>
+
+      <div class="er-sign-section">
+        <h4 class="er-sign-title er-text-center">Atentamente</h4>
+
+        <div class="er-president-sign er-uppercase er-text-center">
+          <hr>
+          <p>Cooper López<br>Presidente de la FVK</p>
+        </div>
+        <div class="er-secretary-sign er-uppercase er-text-center">
+          <hr>
+          <p>Robert Martínez<br>Secretario General de la FVK</p>
+        </div>
+      </div>
+
+      
+    </body>
+  </html>
   _SC_HTML;
 
   return $html;
