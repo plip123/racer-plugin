@@ -270,11 +270,15 @@ function er_get_month ($month_number) {
   }
 }
 
-function er_get_credential_letter ($id, $name, $ci, $expiration_date, $affiliate) {
+function er_get_credential_letter ($id, $name, $ci, $expiration_date, $affiliate, $genere) {
   $date = explode("/", $expiration_date);
   $day = $date[0];
   $month = er_get_month(intval($date[1]));
   $year = $date[2];
+  $article = strcmp('Masculino', $genere) === 0 ? 'el' : 'la';
+  $letter = strcmp('Masculino', $genere) === 0 ? 'o' : 'a';
+  $letter_secondary = strcmp('Masculino', $genere) === 0 ? '' : 'a';
+
 
   $html = <<<_SC_HTML
   <!DOCTYPE html>
@@ -334,7 +338,7 @@ function er_get_credential_letter ($id, $name, $ci, $expiration_date, $affiliate
       <h1 class="er-main-title er-uppercase er-text-center">Credencial de Afiliación</h1>
 
       <p class="er-main-content">
-        La Federación Venezolana de Karting certifica que la ciudadana <span class="er-uppercase"><strong>$name</strong></span>, portadora de la Cédula de Identidad <strong>Nº $ci</strong>, está afiliada a nuestra organización en calidad de <span class="er-uppercase"><strong>$affiliate</strong></span>, con número de carnet <strong>$id</strong>, agradecemos a las autoridades civiles, militares y deportivas prestarle todo el apoyo a nuestro miembro afiliado en cuanto a las actividades que se realizan en traslado de material propio del Karting y permisos inherentes a nuestras actividades. Esta credencial tiene una validez hasta el $day de $month del año $year, cualquier información puede ser verificada por los siguientes números de teléfonos: <strong>0426-447-25-04/0412-613-92-51</strong>.
+        La Federación Venezolana de Karting certifica que {$article} ciudadan{$letter} <span class="er-uppercase"><strong>$name</strong></span>, portador{$letter_secondary} de la Cédula de Identidad <strong>Nº $ci</strong>, está afiliad{$letter} a nuestra organización en calidad de <span class="er-uppercase"><strong>$affiliate</strong></span>, con número de carnet <strong>$id</strong>, agradecemos a las autoridades civiles, militares y deportivas prestarle todo el apoyo a nuestro miembro afiliado en cuanto a las actividades que se realizan en traslado de material propio del Karting y permisos inherentes a nuestras actividades. Esta credencial tiene una validez hasta el $day de $month del año $year, cualquier información puede ser verificada por los siguientes números de teléfonos: <strong>0426-447-25-04/0412-613-92-51</strong>.
       </p>
 
       <div class="er-sign-section">

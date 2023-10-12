@@ -50,13 +50,14 @@ function er_new_post_user( $new_status, $old_status, $post ) {
 
   $upload_dir = er_create_upload_path();
   $carnet_dir = $upload_dir . '/' . preg_replace('/\s+/', '', $post->post_title) . '-carnet.pdf';
-  $affiliate_credential_dir = $upload_dir . '/' . preg_replace('/\s+/', '', $post->post_title) . '-credential.pdf';
+  $affiliate_credential_dir = $upload_dir . '/' . preg_replace('/\s+/', '', $post->post_title) . '-credencial.pdf';
 
   // Data to include into carnet
   $id = $post->ID;
   $avatar = get_the_post_thumbnail_url($id, 'full');
   $name = $post->post_title;
   $ci = '';
+  $genere = '';
   $team = '';
   $state = '';
   $blood = '';
@@ -76,6 +77,7 @@ function er_new_post_user( $new_status, $old_status, $post ) {
   if (strcmp('er_racer', $post->post_type) === 0) {
     $mail_to = get_field('er_racer_email', $id);
     $ci = get_field('er_racer_id', $id);
+    $genere = get_field('er_racer_genere', $id);
     $team = get_field('er_karting_team', $id);
     $blood = get_field('er_racer_blood_type', $id);
     $state = get_field('er_racer_state_represented', $id);
@@ -89,6 +91,7 @@ function er_new_post_user( $new_status, $old_status, $post ) {
   } else if (strcmp('er_mechanic', $post->post_type) === 0) {
     $mail_to = get_field('er_mechanic_email', $id);
     $ci = get_field('er_mechanic_id', $id);
+    $genere = get_field('er_mechanic_genere', $id);
     $team = get_field('er_mechanic_team', $id);
     $blood = get_field('er_mechanic_blood_type', $id);
     $state = get_field('er_mechanic_team_site', $id);
@@ -135,7 +138,7 @@ function er_new_post_user( $new_status, $old_status, $post ) {
   // Create Credential Letter
   $mpdf = new \Mpdf\Mpdf();
 
-  $html = er_get_credential_letter($id, $name, $ci, $expiration_date, $affiliate);
+  $html = er_get_credential_letter($id, $name, $ci, $expiration_date, $affiliate, $genere);
   $mpdf->WriteHTML($html);
 
   // Output a PDF file to temporal dir
