@@ -14,8 +14,8 @@
     .er-container-front, .er-container-back {
       border: 50px solid #500f12;
       border-width: 50px 0px;
-      height: 800px;
-      width: 500px;
+      height: 850px;
+      width: 550px;
       margin: auto;
       padding: 10px;
     }
@@ -45,8 +45,8 @@
       width: 200px;
     }
 
-    .er-qr-container img {
-      margin-top: 35px;
+    .er-qr-container {
+      padding-top: 35px;
     }
 
     .er-avatar-container {
@@ -59,7 +59,7 @@
       width: 250px;
       height: 250px;
       border-radius: 200rem;
-      background-image: url('https://fvkarting.com.ve/wp-content/uploads/2023/09/8F297442-A2DA-4D53-9D6F-32D43A3931C2-scaled.jpeg');
+      background-image: url('$avatar');
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center center;
@@ -69,27 +69,27 @@
     .er-info {
       text-align: center;
       position: relative;
-      margin-top: 40px;
+      margin-top: 10px;
       font-weight: 600;
     }
 
     .er-info .er-info-name {
-      font-size: 56px;
+      font-size: 30px;
       border-bottom: #500f12 solid 3px;
-      width: 350px;
+      width: 450px;
       margin: auto;
     }
 
     .er-info-ci, .er-info-team, .er-info-state, .er-afiliado {
-      font-size: 32px;
+      font-size: 24px;
       margin-top: 10px;
       text-align: center;
     }
 
     .er-afiliado {
       font-weight: 500;
-      font-size: 32px;
-      margin-top: 50px;
+      font-size: 28px;
+      margin-top: 28px;
     }
   </style>
   <body>
@@ -101,23 +101,24 @@
 
       <div class="er-img-container">
         <div class="er-qr-container">
-          <img src="https://cdn.qr-code-generator.com/account29709329/qrcodes/72705600.png?Expires=1697000442&Signature=c7AJ7Io1gZoLJn2jqrxWaTVADxA7LZ56TaOSEtDi7N4tHVtXUN6qrQErWpqEqy4i02pNmYldPL0~6sF5elYR9dQmwAy74eSMFQfUrMtIIg1CoAp-voGz1bOjBEWVEYgVQxm1VWerMy7BhvowqAiyvNaUGaXXCEUtKEE6DZungJdnYi1BxJhWUj0wqLhyHvGLOUvSy0-HvhJUCRLDrT6mACWpYC8o9V1jmWytcr8CimenyCXoKFk-juD367~KOE-pPMEWjiWcEiKeTp9G1dAaTjk7BR0P8581C3Fqt4GJF1RbI3GryE7Pbc5~J7Ame-ZMpZJqM2SHVX5ak8pmWg9AHA__&Key-Pair-Id=KKMPOJU8AYATR" width="200" alt="QR">
+        <img src="$qr_svg_file" width="200" alt="QR">
         </div>
         <div class="er-avatar-container">
           <div class="er-avatar"></div>
         </div>
+        <p></p>
       </div>
 
       <div class="er-info">
-        <div class="er-info-name">Carlos Pino</div>
-        <div class="er-info-ci">C.I: 26.484.045</div>
-        <div class="er-info-team">Team</div>
-        <div class="er-info-state">Estado Carabobo</div>
+        <div class="er-info-name">$name</div>
+        <div class="er-info-ci">C.I: $ci</div>
+        <div class="er-info-team">$team</div>
+        <div class="er-info-state">$state</div>
       </div>
 
       <div class="er-afiliado">
-        <span style="padding-right: 180px;">Piloto Afiliado</span>
-        <span>Nº001</span>
+        <span style="padding-right: 180px;">$affiliate Afiliado</span>
+        <span>Nº$id</span>
       </div>
     </div>
   </body>
