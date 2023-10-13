@@ -1,12 +1,12 @@
 <?php
 /*
- * Plugin Name: EYSS Racer
- * Plugin URI: https://eyss.io
+ * Plugin Name: FVK Racer
+ * Plugin URI: https://cpservice.es
  * Description: Karting event manager, track records, mechanics, drivers and results tables.
  * Version: 0.2.1
- * Author: EYSS
- * Author URI: https://eyss.io
- * Requires PHP: 8.1+
+ * Author: Carlos Pino
+ * Author URI: https://cpservice.es
+ * Requires PHP: 8.0+
  * License: GPL-2.0+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
