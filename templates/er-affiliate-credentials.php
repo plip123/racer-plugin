@@ -270,7 +270,7 @@ function er_get_month ($month_number) {
   }
 }
 
-function er_get_credential_letter ($id, $name, $ci, $expiration_date, $affiliate, $genere) {
+function er_get_credential_letter ($id, $name, $ci, $expiration_date, $affiliate, $genere, $qr) {
   $date = explode("/", $expiration_date);
   $day = $date[0];
   $month = er_get_month(intval($date[1]));
@@ -297,8 +297,22 @@ function er_get_credential_letter ($id, $name, $ci, $expiration_date, $affiliate
         text-transform: uppercase;
       }
 
-      .er-header img {
+      .er-header {
         margin: auto;
+        height: 120px;
+        width: 900px;
+      }
+
+      .er-header .er-logo {
+        float: left;
+        width: 150px;
+        padding-top: 20px;
+      }
+
+      .er-header .er-qr-code {
+        float: right;
+        height: 100px;
+        width: 100px;
       }
 
       .er-main-title {
@@ -321,18 +335,18 @@ function er_get_credential_letter ($id, $name, $ci, $expiration_date, $affiliate
       }
 
       .er-president-sign {
-        float: left;
-        width: 300px;
-      }
-
-      .er-secretary-sign {
-        float: right;
-        width: 300px;
+        margin: auto;
+        width: 350px;
       }
     </style>
     <body>
       <div class="er-header er-text-center">
-        <img src="https://fvkarting.com.ve/wp-content/uploads/2023/03/LOGO-FVK-COLOR.png" width="200" alt="FVK">
+        <div class="er-logo">
+          <img src="https://fvkarting.com.ve/wp-content/uploads/2023/03/LOGO-FVK-COLOR.png" width="150" alt="FVK">
+        </div>
+        <div class="er-qr-code">
+          <img src="$qr" width="100" height="100" alt="QR">
+        </div>
       </div>
 
       <h1 class="er-main-title er-uppercase er-text-center">Credencial de Afiliación</h1>
@@ -346,11 +360,7 @@ function er_get_credential_letter ($id, $name, $ci, $expiration_date, $affiliate
 
         <div class="er-president-sign er-uppercase er-text-center">
           <hr>
-          <p>Cooper López<br>Presidente de la FVK</p>
-        </div>
-        <div class="er-secretary-sign er-uppercase er-text-center">
-          <hr>
-          <p>Robert Martínez<br>Secretario General de la FVK</p>
+          <p>Cooper López<br>Presidente<br>Federación Venezolana de Karting</p>
         </div>
       </div>
 

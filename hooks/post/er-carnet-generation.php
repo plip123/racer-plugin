@@ -138,7 +138,7 @@ function er_new_post_user( $new_status, $old_status, $post ) {
   // Create Credential Letter
   $mpdf = new \Mpdf\Mpdf();
 
-  $html = er_get_credential_letter($id, $name, $ci, $expiration_date, $affiliate, $genere);
+  $html = er_get_credential_letter($id, $name, $ci, $expiration_date, $affiliate, $genere, $qr_svg_file);
   $mpdf->WriteHTML($html);
 
   // Output a PDF file to temporal dir

@@ -3,7 +3,7 @@
  * Plugin Name: EYSS Racer
  * Plugin URI: https://eyss.io
  * Description: Karting event manager, track records, mechanics, drivers and results tables.
- * Version: 0.2.0
+ * Version: 0.2.1
  * Author: EYSS
  * Author URI: https://eyss.io
  * Requires PHP: 8.1+
