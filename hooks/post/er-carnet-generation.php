@@ -1,5 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
+use chillerlan\QRCode\QRCode;
+use chillerlan\QRCode\QROptions;
+
 require_once ER_PATH . '/vendor/autoload.php';
 require_once ER_PATH . '/templates/er-affiliate-credentials.php';
 
@@ -12,31 +17,17 @@ function er_create_upload_path () {
 }
 
 function er_get_qr ($id, $name, $ci, $team, $blood, $born, $allergic) {
-  $url = 'https://api.qr-code-generator.com/v1/create?access-token=7Uo9JKCJstnCWdAkVihNCeZ62sxxf3NEw_aKeTgntv5fkGn9DIpe4Cua11a1sCh9';
   $message = "Afiliado Nº $id, \r\nName: $name, \r\nC.I: $ci, \r\nFecha de nacimiento: $born, \r\nEquipo: $team, \r\nTipo de Sangre: $blood, \r\nAlergico a: $allergic";
-  $payload = json_encode(array(
-    "frame_name" => "no-frame",
-    "qr_code_text" => $message,
-    "image_format" => "SVG",
-    "image_width" => 200
-  ));
+  $options = new QROptions(
+    [
+      'eccLevel' => QRCode::ECC_L,
+      'outputType' => QRCode::OUTPUT_MARKUP_SVG,
+      'version' => QRCode::VERSION_AUTO,
+    ]
+  );
+  $qrcode = (new QRCode($options))->render($message);
 
-  $request = curl_init();
-  curl_setopt($request, CURLOPT_URL, $url);
-  curl_setopt($request, CURLOPT_POSTFIELDS, $payload);
-  curl_setopt($request, CURLOPT_POST, true);
-  curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($request, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-
-  $response = curl_exec($request);
-  $httpCode = curl_getinfo($request, CURLINFO_HTTP_CODE);
-  curl_close($request);
-
-  if ($httpCode < 400) {
-      return $response;
-  } else {
-      return 0;
-  }
+  return $qrcode;
 }
 
 add_action( 'transition_post_status', 'er_new_post_user', 10, 3 );
@@ -102,14 +93,10 @@ function er_new_post_user( $new_status, $old_status, $post ) {
 
   $ci = number_format(intval($ci), 0, ',', '.');
 
-  // Create QR file
+  // Create QR
   $qr_image = er_get_qr($id, $name, $ci, $team, $blood, $born, $allergic);
-  $qr_svg_file = $upload_dir . '/' . preg_replace('/\s+/', '', $post->post_title) . '-qr.svg';
-  $file_open = fopen( $qr_svg_file, "a" );
-  $write = fputs( $file_open, $qr_image );
-  fclose( $file_open );
 
-  if ($qr_image === 0) {
+  if (!isset($qr_image)) {
     $body = "Su afiliación fue aprobada con exito, pero hubo un error al generar sus credenciales de afiliación, por favor coloquese en contacto con nosotros mediante registro@fvkarting.com.ve";
   }
 
@@ -125,7 +112,7 @@ function er_new_post_user( $new_status, $old_status, $post ) {
   ]);
 
   // Write some HTML code:
-  $html = er_get_front_carnet($id, $avatar, $qr_svg_file, $name, $ci, $team, $state, $affiliate);
+  $html = er_get_front_carnet($id, $avatar, $qr_image, $name, $ci, $team, $state, $affiliate);
   $mpdf->WriteHTML($html);
   $mpdf->AddPage();
 
@@ -138,7 +125,7 @@ function er_new_post_user( $new_status, $old_status, $post ) {
   // Create Credential Letter
   $mpdf = new \Mpdf\Mpdf();
 
-  $html = er_get_credential_letter($id, $name, $ci, $expiration_date, $affiliate, $genere, $qr_svg_file);
+  $html = er_get_credential_letter($id, $name, $ci, $expiration_date, $affiliate, $genere, $qr_image);
   $mpdf->WriteHTML($html);
 
   // Output a PDF file to temporal dir
@@ -150,7 +137,6 @@ function er_new_post_user( $new_status, $old_status, $post ) {
   // Clear temporal files
   wp_delete_file($carnet_dir);
   wp_delete_file($affiliate_credential_dir);
-  wp_delete_file($qr_svg_file);
 
   return;
 }
