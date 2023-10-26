@@ -99,8 +99,21 @@ function er_latest_championship_widget () {
     );
 
     $terms = get_terms( $args );
-    //print_r($terms);
     return er_latest_widget("championship", $terms);
 }
 add_shortcode('er-latest-championship-widget', 'er_latest_championship_widget');
 
+function er_registration_form_verify () {
+    $html = <<<_SC_HTML
+        <div id="er-registration-verify" class="flex w-full flex-col gap-4">
+            <p>Ingrese su número de piloto para continuar con la inscripción</p>
+            <div class="flex w-1/2 gap-4">
+                <input id="er-registration-pilot-input" type="number" placeholder="Número de Piloto" class="rounded-2xl bg-white shadow-md border-2 p-2">
+                <button id="er-registration-btn"class="rounded-2xl text-white bg-[#500F12] shadow-md w-24 py-2">Verificar</button>
+            </div>
+        </div>
+    _SC_HTML;
+
+  return $html;
+}
+add_shortcode('er-registration-verify', 'er_registration_form_verify');

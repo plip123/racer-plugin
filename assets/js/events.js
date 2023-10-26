@@ -20,6 +20,9 @@ const uiSpinner = (contentType) => {
       jQuery("#er-show-event")?.append(spinner);
       jQuery("#er-event-list")?.append(spinner);
       break;
+    case "registration":
+      jQuery("#er-registration-btn")?.empty();
+      jQuery("#er-registration-btn")?.append(jQuery(spinner));
     default:
       break;
   }

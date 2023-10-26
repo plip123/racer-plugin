@@ -27,6 +27,10 @@ function er_js_insert_enqueue() {
 
   wp_register_script('er-event-script', plugins_url('/js/events.js', __FILE__), array(), '3.3.1', true);
   wp_enqueue_script('er-event-script');
+
+  // Registration
+  wp_register_script('er-registration-script', plugins_url('/js/forms/er-registration-event.js', __FILE__), array(), '3.3.1', true);
+  wp_enqueue_script('er-registration-script');
 }
 
 add_action('wp_enqueue_scripts', 'er_js_insert_enqueue');
