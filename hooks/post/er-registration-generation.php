@@ -2,12 +2,13 @@
 
 require_once ER_PATH . '/vendor/autoload.php';
 require_once ER_PATH . '/templates/er-registration.php';
+require_once ER_PATH . '/tools/er-upload-path.php';
 
 add_action( 'transition_post_status', 'er_new_registration', 10, 3 );
 
 function er_new_registration( $new_status, $old_status, $post ) {
   // Filter posts
-  $isPublished = (strcmp('publish', $old_status) === 0 && strcmp('publish', $new_status) === 0) || (strcmp('publish', $new_status) === 0);
+  $isPublished = (strcmp('publish', $new_status) === 0);
   if (!$isPublished || strcmp('inscripcion', $post->post_type) !== 0) return;
 
   
@@ -20,7 +21,7 @@ function er_new_registration( $new_status, $old_status, $post ) {
   $event_date = get_field('er_event_date', $event->ID);
   
   // Mail data
-  $mail_to = array(get_field('er_racer_email', $pilot_id), 'cpservice98@gmail.com');
+  $mail_to = array(get_field('er_racer_email', $pilot_id));//, 'cp.carlos.pino@gmail.com');
   $subject = 'Felicidades! Su inscripción al evento ' . $event_name . ' fue aprobada';
   $body = "Su inscripción al evento <strong>" . $event_name . "</strong> de la fecha <strong>" . $event_date . "</strong> fue aprobada con exito.<br><br>Ahora puede descargar <strong>PLANILLA DE REVISIÓN TÉCNICA</strong> desde los archivos adjuntos.<br><br>En caso de tener inconvenientes contactenos al correo registro@fvkarting.com.ve";
   $headers = array('Content-Type: text/html; charset=UTF-8');
@@ -103,16 +104,14 @@ function er_new_registration( $new_status, $old_status, $post ) {
     'encendido_arranque' => get_field('er_check_general_encendido_arranque', $id)
   );
 
-  // Create Credential Letter
+  // Create check form
   $mpdf = new \Mpdf\Mpdf();
 
   $html = er_get_registration_form($registration_data);
   $mpdf->WriteHTML($html);
 
-  // Output a PDF file to temporal dir
-  $mpdf->Output();
-  return;
-  //$mpdf->OutputFile($revision_dir);
+  // Output a PDF file to temporal dir$mpdf->OutputFile($revision_dir);
+  $mpdf->OutputFile($revision_dir);
 
   // Send email
   wp_mail($mail_to, $subject, $body, $headers, $attachments);

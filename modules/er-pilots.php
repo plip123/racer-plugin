@@ -15,12 +15,16 @@ function er_pilot_verification () {
   if (isset($id) && isset($event_id)) {
     $pilot = get_post($id);
     $event = get_post($event_id);
+    $event_date = date_create_from_format('d/m/Y', get_field('er_event_date', $event_id));
+    $current_date = time();
+    $isEventActive = $event_date !== false ? $event_date->getTimestamp() >= $current_date : false;
 
     if (
       isset($pilot) &&
       strcmp($pilot->post_type, "er_racer") === 0 &&
       isset($event) &&
-      strcmp($event->post_type, "er_evento") === 0
+      strcmp($event->post_type, "er_evento") === 0 &&
+      $isEventActive
     ) {
       $pilot_email = get_field('er_racer_email', $id);
       $categories = get_the_terms($pilot, 'er_racer_category');

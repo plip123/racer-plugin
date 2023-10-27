@@ -7,14 +7,8 @@ use chillerlan\QRCode\QROptions;
 
 require_once ER_PATH . '/vendor/autoload.php';
 require_once ER_PATH . '/templates/er-affiliate-credentials.php';
+require_once ER_PATH . '/tools/er-upload-path.php';
 
-function er_create_upload_path () {
-  $upload = wp_upload_dir();
-  $upload_dir = trailingslashit($upload['basedir']) . '/er_racer';
-  if (!is_dir($upload_dir)) wp_mkdir_p($upload_dir);
-
-  return $upload_dir;
-}
 
 function er_get_qr ($id, $name, $ci, $team, $blood, $born, $allergic) {
   $message = "Afiliado Nº $id, \r\nName: $name, \r\nC.I: $ci, \r\nFecha de nacimiento: $born, \r\nEquipo: $team, \r\nTipo de Sangre: $blood, \r\nAlergico a: $allergic";
@@ -34,7 +28,7 @@ add_action( 'transition_post_status', 'er_new_post_user', 10, 3 );
 
 function er_new_post_user( $new_status, $old_status, $post ) {
   // Filter posts
-  $isPublished = (strcmp('publish', $old_status) === 0 && strcmp('publish', $new_status) === 0) || (strcmp('publish', $new_status) === 0);
+  $isPublished = strcmp('publish', $new_status) === 0;
   if (!$isPublished ||
     (strcmp('er_racer', $post->post_type) !== 0 && strcmp('er_mechanic', $post->post_type) !== 0)
   ) return;
