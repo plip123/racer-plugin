@@ -109,7 +109,7 @@ function er_registration_form_verify () {
             <p>Ingrese su número de piloto para continuar con la inscripción</p>
             <div class="flex w-1/2 gap-4">
                 <input id="er-registration-pilot-input" type="number" placeholder="Número de Piloto" class="rounded-2xl bg-white shadow-md border-2 p-2">
-                <button id="er-registration-btn"class="rounded-2xl text-white bg-[#500F12] shadow-md w-24 py-2">Verificar</button>
+                <button id="er-registration-btn"class="rounded-2xl text-white bg-[#500F12] shadow-md w-24 p-2">Verificar</button>
             </div>
         </div>
     _SC_HTML;

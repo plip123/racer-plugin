@@ -7,11 +7,7 @@ const uiNotifications = (type, message, timeout=0) => {
 }
 
 const uiSpinner = (contentType) => {
-  const spinner = `
-    <svg class="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
-      <!-- ... -->
-    </svg>
-  `;
+  const spinner = `<span class="w-full text-center">Cargando...</span>`;
   
   switch (contentType) {
     case "event":
@@ -45,7 +41,7 @@ const uiMonths = {
 
 function event_html_template (event) {
   const template = `
-    <div id="er-${event.id}" class="flex rounded-2xl w-full overflow-hidden bg-white shadow-md max-h-[330px]">
+    <div id="er-${event.id}" class="flex rounded-2xl w-full overflow-hidden bg-white shadow-md max-h-[330px] cursor-pointer" onclick="window.location.href = '/inscripciones?event=${event.id}';">
       <image class="object-cover w-4/12 h-full" src="${event.image}" alt="${event.title}">
 
       <div class="flex flex-col gap-2 text-base p-5">

@@ -21,30 +21,45 @@ async function er_registration_form () {
     jQuery("#er-registration-verify").show();
   }
 
-  const response = await er_call_to_ajax_function({
-    action: "er_pilot_verification",
-    id,
-    event: searchParams.get('event'),
-  }, "registration");
-
-  if (response.data.isActive) {
-    isAffiliate = true;
-    jQuery("#er-registration-form").show();
-    jQuery("input[name=postdata-1-post-title]").val(response.data.pilot.post_title);
-    jQuery("input[name=postdata-1-post-title]").prop('readonly', true);
-    jQuery("input[name=email-1]").val(response.data.pilot.email);
-    jQuery("input[name=email-1]").prop('readonly', true);
-    jQuery("input[name=hidden-2]").val(response.data.pilot.category.term_id);
-    jQuery("input[name=text-6]").val(response.data.pilot.category.name);
-    jQuery("input[name=text-6]").prop('readonly', true);
-    er_registration_form_set_data(response.data.pilot, response.data.event);
-    jQuery("#er-registration-verify").hide();
-  } else {
+  try {
+    const response = await er_call_to_ajax_function({
+      action: "er_pilot_verification",
+      id,
+      event: searchParams.get('event'),
+    }, "registration");
+  
+    if (response.data.isRegistered) {
+      isAffiliate = false;
+      jQuery("#er-registration-form").hide();
+      jQuery("#er-registration-btn")?.html("Verificar");
+      jQuery("#er-registration-verify").show();
+      jQuery("#er-registration-verify").append(jQuery(uiNotifications('error', 'El Piloto ya fue registrado en este evento.')));
+    } else if (response.data.isActive) {
+      isAffiliate = true;
+      jQuery("#er-registration-form").show();
+      jQuery("input[name=postdata-1-post-title]").val(response.data.pilot.post_title);
+      jQuery("input[name=postdata-1-post-title]").prop('readonly', true);
+      jQuery("input[name=email-1]").val(response.data.pilot.email);
+      jQuery("input[name=email-1]").prop('readonly', true);
+      jQuery("input[name=number-2]").val(response.data.pilot.ID);
+      jQuery("input[name=number-2]").prop('readonly', true);
+      jQuery("input[name=text-6]").val(response.data.pilot.category.name);
+      jQuery("input[name=text-6]").prop('readonly', true);
+      er_registration_form_set_data(response.data.pilot, response.data.event);
+      jQuery("#er-registration-verify").hide();
+    } else {
+      isAffiliate = false;
+      jQuery("#er-registration-form").hide();
+      jQuery("#er-registration-btn")?.html("Verificar");
+      jQuery("#er-registration-verify").show();
+      jQuery("#er-registration-verify").append(jQuery(uiNotifications('error', 'Piloto no afiliado.')));
+    }
+  } catch (error) {
     isAffiliate = false;
     jQuery("#er-registration-form").hide();
     jQuery("#er-registration-btn")?.html("Verificar");
     jQuery("#er-registration-verify").show();
-    jQuery("#er-registration-verify").append(jQuery(uiNotifications('error', 'Piloto no afiliado.')))
+    jQuery("#er-registration-verify").append(jQuery(uiNotifications('error', 'Piloto inválido.')));
   }
 }
 
