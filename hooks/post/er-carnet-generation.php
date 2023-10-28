@@ -28,7 +28,7 @@ add_action( 'transition_post_status', 'er_new_post_user', 10, 3 );
 
 function er_new_post_user( $new_status, $old_status, $post ) {
   // Filter posts
-  $isPublished = strcmp('publish', $new_status) === 0;
+  $isPublished = (strcmp('publish', $old_status) === 0 && strcmp('publish', $new_status) === 0) || (strcmp('publish', $new_status) === 0);
   if (!$isPublished ||
     (strcmp('er_racer', $post->post_type) !== 0 && strcmp('er_mechanic', $post->post_type) !== 0)
   ) return;

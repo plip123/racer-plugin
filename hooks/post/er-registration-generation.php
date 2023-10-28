@@ -8,9 +8,8 @@ add_action( 'transition_post_status', 'er_new_registration', 10, 3 );
 
 function er_new_registration( $new_status, $old_status, $post ) {
   // Filter posts
-  $isPublished = (strcmp('publish', $new_status) === 0);
+  $isPublished = (strcmp('publish', $old_status) === 0 && strcmp('publish', $new_status) === 0) || (strcmp('publish', $new_status) === 0);
   if (!$isPublished || strcmp('inscripcion', $post->post_type) !== 0) return;
-
   
   $upload_dir = er_create_upload_path();
   $revision_dir = $upload_dir . '/' . preg_replace('/\s+/', '', $post->post_title) . '-revision-tecnica.pdf';
@@ -21,7 +20,7 @@ function er_new_registration( $new_status, $old_status, $post ) {
   $event_date = get_field('er_event_date', $event->ID);
   
   // Mail data
-  $mail_to = array(get_field('er_racer_email', $pilot_id));//, 'cp.carlos.pino@gmail.com');
+  $mail_to = array(get_field('er_racer_email', $pilot_id), 'inscripciones.fvk@gmail.com');
   $subject = 'Felicidades! Su inscripción al evento ' . $event_name . ' fue aprobada';
   $body = "Su inscripción al evento <strong>" . $event_name . "</strong> de la fecha <strong>" . $event_date . "</strong> fue aprobada con exito.<br><br>Ahora puede descargar <strong>PLANILLA DE REVISIÓN TÉCNICA</strong> desde los archivos adjuntos.<br><br>En caso de tener inconvenientes contactenos al correo registro@fvkarting.com.ve";
   $headers = array('Content-Type: text/html; charset=UTF-8');
