@@ -331,12 +331,18 @@ function er_get_credential_letter ($id, $name, $ci, $expiration_date, $affiliate
       }
 
       .er-sign-title {
-        margin-bottom: 100px;
+        margin-bottom: 30px;
       }
 
       .er-president-sign {
         margin: auto;
         width: 350px;
+      }
+
+      #er-sign-image {
+        width: 280px;
+        height: auto;
+        margin-bottom: -20px;
       }
     </style>
     <body>
@@ -359,12 +365,11 @@ function er_get_credential_letter ($id, $name, $ci, $expiration_date, $affiliate
         <h4 class="er-sign-title er-text-center">Atentamente</h4>
 
         <div class="er-president-sign er-uppercase er-text-center">
+          <img id="er-sign-image" src="https://fvkarting.com.ve/wp-content/uploads/2023/11/cooper-sign.png" alt="Sign" width="280">
           <hr>
           <p>Cooper López<br>Presidente<br>Federación Venezolana de Karting</p>
         </div>
       </div>
-
-      
     </body>
   </html>
   _SC_HTML;
