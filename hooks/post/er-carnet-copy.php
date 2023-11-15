@@ -28,7 +28,7 @@ add_action( 'transition_post_status', 'er_new_post_user', 10, 3 );
 
 function er_new_post_user( $new_status, $old_status, $post ) {
   // Filter posts
-  $isPublished = (strcmp('publish', $old_status) === 0 && strcmp('publish', $new_status) === 0) || (strcmp('publish', $new_status) === 0);
+  $isPublished = strcmp('publish', $new_status) === 0;
   if (!$isPublished ||
     (strcmp('er_racer', $post->post_type) !== 0 && strcmp('er_mechanic', $post->post_type) !== 0)
   ) return;
@@ -55,7 +55,7 @@ function er_new_post_user( $new_status, $old_status, $post ) {
   // Mail data
   $mail_to = '';
   $subject = 'Felicidades! Su afiliación fue aprobada';
-  $body = "Su afiliación fue aprobada con exito.<br><br>Ahora puede descargar sus credenciales de afiliación desde los archivos adjuntos.<br><br>En caso de tener inconvenientes contactenos al correo licencias.fvk@gmail.com";
+  $body = "Su afiliación fue aprobada con exito.<br><br>Ahora puede descargar sus credenciales de afiliación desde los archivos adjuntos.<br><br>En caso de tener inconvenientes contactenos al correo registro@fvkarting.com.ve";
   $headers = array('Content-Type: text/html; charset=UTF-8');
   $attachments = array($carnet_dir, $affiliate_credential_dir);
 
@@ -91,7 +91,7 @@ function er_new_post_user( $new_status, $old_status, $post ) {
   $qr_image = er_get_qr($id, $name, $ci, $team, $blood, $born, $allergic);
 
   if (!isset($qr_image)) {
-    $body = "Su afiliación fue aprobada con exito, pero hubo un error al generar sus credenciales de afiliación, por favor coloquese en contacto con nosotros mediante licencias.fvk@gmail.com";
+    $body = "Su afiliación fue aprobada con exito, pero hubo un error al generar sus credenciales de afiliación, por favor coloquese en contacto con nosotros mediante registro@fvkarting.com.ve";
   }
 
   // Create an instance of the class:
@@ -126,7 +126,7 @@ function er_new_post_user( $new_status, $old_status, $post ) {
   $mpdf->OutputFile($affiliate_credential_dir);
 
   // Send email
-  wp_mail([$mail_to, "licencias.fvk@gmail.com"], $subject, $body, $headers, $attachments);
+  wp_mail($mail_to, $subject, $body, $headers, $attachments);
 
   // Clear temporal files
   wp_delete_file($carnet_dir);
